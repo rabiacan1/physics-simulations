@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Young's Double Slit Experiment</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Three.js and OrbitControls for 3D WebGL Visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>Young's Double Slit & N-Slit Experiment</h1>
+                    <p class="subtitle">Wave Optics, N-Slit Interference & 3D Wavefield Simulation</p>
+                </div>
+                <div class="view-mode-toggle">
+                    <button id="btn-view-2d" class="mode-btn active">2D View</button>
+                    <button id="btn-view-3d" class="mode-btn">3D Interactive View</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Controls Sidebar -->
+            <aside class="controls-sidebar">
+                <div class="control-group">
+                    <div class="slider-header">
+                        <span class="label">Number of Slits (N)</span>
+                        <span class="value" id="slits-val">2</span>
+                    </div>
+                    <input type="range" id="slits" min="1" max="10" step="1" value="2">
+                </div>
+
+                <div class="control-group">
+                    <div class="slider-header">
+                        <span class="label">Primary Wavelength (&lambda;<sub>1</sub>)</span>
+                        <span class="value" id="wavelength-val">550 nm</span>
+                    </div>
+                    <input type="range" id="wavelength" min="380" max="750" step="1" value="550">
+                    <div class="color-preview" id="color-preview"></div>
+                </div>
+
+                <!-- Rayleigh Resolution Mode Toggle -->
+                <div class="control-group checkbox-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="rayleigh-toggle">
+                        <span class="custom-toggle"></span>
+                        <span class="label-text">Rayleigh Mode (&lambda;<sub>2</sub>)</span>
+                    </label>
+                </div>
+
+                <!-- Second Wavelength (hidden by default) -->
+                <div class="control-group" id="group-lambda2" style="display: none;">
+                    <div class="slider-header">
+                        <span class="label">Secondary Wavelength (&lambda;<sub>2</sub>)</span>
+                        <span class="value" id="wavelength2-val">570 nm</span>
+                    </div>
+                    <input type="range" id="wavelength2" min="380" max="750" step="1" value="570">
+                    <div class="color-preview" id="color-preview2"></div>
+                </div>
+
+                <div class="control-group">
+                    <div class="slider-header">
+                        <span class="label">Slit Separation (d)</span>
+                        <span class="value" id="distance-val">40 &mu;m</span>
+                    </div>
+                    <input type="range" id="distance" min="15" max="100" step="1" value="40">
+                </div>
+
+                <div class="control-group">
+                    <div class="slider-header">
+                        <span class="label">Slit Width (a)</span>
+                        <span class="value" id="width-val">5 &mu;m</span>
+                    </div>
+                    <input type="range" id="width" min="1" max="15" step="0.5" value="5">
+                </div>
+
+                <div class="control-group">
+                    <div class="slider-header">
+                        <span class="label">Simulation Speed</span>
+                        <span class="value" id="speed-val">1.0x</span>
+                    </div>
+                    <input type="range" id="speed" min="0" max="2" step="0.1" value="1">
+                </div>
+
+                <div class="button-row">
+                    <button id="btn-play-pause" class="btn primary">Pause</button>
+                    <button id="btn-reset" class="btn secondary">Reset</button>
+                </div>
+
+                <div class="stats-panel">
+                    <h3>Experiment Parameters & Physics</h3>
+                    <div class="stat-row">
+                        <span>Peak Intensity Factor (N<sup>2</sup>):</span>
+                        <span id="peak-intensity">4x</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Secondary Maxima Count:</span>
+                        <span id="secondary-maxima">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Resolving Power (R = m&middot;N):</span>
+                        <span id="resolving-power">2</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Fringe Spacing (&Delta;y):</span>
+                        <span id="fringe-spacing">~ 13.8 mm</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Diffraction Envelope:</span>
+                        <span id="diffraction-width">~ 110 mm</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Simulation Canvases -->
+            <main class="canvas-container">
+                <div class="canvas-card">
+                    <div class="card-header">
+                        <h2>2D Wave Propagation Field</h2>
+                        <span class="badge">Wavefront View</span>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="waveCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="canvas-card">
+                    <div class="card-header">
+                        <h2>Screen Intensity Profile</h2>
+                        <span class="badge">Interference Pattern</span>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="screenCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 3D Interactive WebGL Simulation Card -->
+                <div class="canvas-card" id="three-card" style="display: none;">
+                    <div class="card-header">
+                        <h2>3D Wave & Surface Intensity Field</h2>
+                        <span class="badge">WebGL 360° View</span>
+                    </div>
+                    <div class="canvas-wrapper" id="three-wrapper" style="height: 540px;">
+                        <!-- Three.js Canvas will be dynamically appended here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="physics.js"></script>
+    <script src="three_scene.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -21,24 +21,28 @@ This project models **Young's Double Slit**, **N-Slit Diffraction Gratings**, **
 ### 1. N-Slit Intensity Distribution
 The intensity profile $I(\theta)$ on the observation screen resulting from $N$ identical slits of width $a$ and slit separation $d$ is derived from the superposition of complex wave fields:
 
-$$I(\theta) = I_0 \cdot \left[ \frac{\sin\left(\frac{N \pi d \sin\theta}{\lambda}\right)}{N \sin\left(\frac{\pi d \sin\theta}{\lambda}\right)} \right]^2 \cdot \text{sinc}^2\left(\frac{\pi a \sin\theta}{\lambda}\right)$$
+$$
+I(\theta) = I_0 \cdot \left[ \frac{\sin\left(\frac{N \pi d \sin\theta}{\lambda}\right)}{N \sin\left(\frac{\pi d \sin\theta}{\lambda}\right)} \right]^2 \cdot \text{sinc}^2\left(\frac{\pi a \sin\theta}{\lambda}\right)
+$$
 
 Where:
-*   $\beta = \frac{\pi d \sin\theta}{\lambda}$ represents the **multi-slit interference phase factor**.
-*   $\alpha = \frac{\pi a \sin\theta}{\lambda}$ represents the **single-slit diffraction envelope phase factor**.
-*   As $N \to \infty$, the principal maxima intensity scales with $I_{\text{max}} = I_0 \cdot N^2$, while $(N-2)$ secondary maxima appear between adjacent principal peaks.
+* $\beta = \frac{\pi d \sin\theta}{\lambda}$ represents the **multi-slit interference phase factor**.
+* $\alpha = \frac{\pi a \sin\theta}{\lambda}$ represents the **single-slit diffraction envelope phase factor**.
+* As $N \to \infty$, the principal maxima intensity scales with $I_{\text{max}} = I_0 \cdot N^2$, while $(N-2)$ secondary maxima appear between adjacent principal peaks.
 
 ---
 
 ### 2. Rayleigh Criterion & Resolving Power ($R$)
 The Rayleigh criterion defines the limit of resolution where two adjacent spectral lines of wavelengths $\lambda_1$ and $\lambda_2$ are considered resolved when the principal maximum of $\lambda_1$ falls directly on the first minimum of $\lambda_2$:
 
-$$R = \frac{\lambda}{\Delta\lambda} = m \cdot N$$
+$$
+R = \frac{\lambda}{\Delta\lambda} = m \cdot N
+$$
 
 Where:
-*   $\Delta\lambda = |\lambda_1 - \lambda_2|$ is the minimum resolvable wavelength difference.
-*   $m$ is the diffraction order ($m = 1, 2, \dots$).
-*   Increasing the number of illuminated slits $N$ sharpens the principal peaks, increasing the resolving power $R$ linearly.
+* $\Delta\lambda = |\lambda_1 - \lambda_2|$ is the minimum resolvable wavelength difference.
+* $m$ is the diffraction order ($m = 1, 2, \dots$).
+* Increasing the number of illuminated slits $N$ sharpens the principal peaks, increasing the resolving power $R$ linearly.
 
 ---
 
@@ -46,16 +50,25 @@ Where:
 
 #### A. Wavelength ($\lambda$) and De Broglie Momentum
 A decrease in wavelength ($\lambda \downarrow$) corresponds to an increase in the particle's momentum ($p \uparrow$) and energy ($E \uparrow$) via the de Broglie relation:
-$$p = \frac{h}{\lambda}$$
+
+$$
+p = \frac{h}{\lambda}
+$$
 
 Wavelength is inversely proportional to the wave number $k$:
-$$k = \frac{2\pi}{\lambda}$$
+
+$$
+k = \frac{2\pi}{\lambda}
+$$
 
 A smaller wavelength increases $k$, forcing the wave function $\Psi(x) \propto e^{ikx}$ to oscillate at a **higher spatial frequency**. As $\lambda$ decreases, the fringe spacing $\Delta y = \frac{\lambda L}{d}$ shrinks, making the peaks of the probability density graph $P(y) = |\Psi(y)|^2$ tightly packed.
 
 #### B. Slit Width ($a$) and Heisenberg's Uncertainty Principle
 By Heisenberg's Uncertainty Principle:
-$$\Delta x \cdot \Delta p_x \ge \frac{\hbar}{2}$$
+
+$$
+\Delta x \cdot \Delta p_x \ge \frac{\hbar}{2}
+$$
 
 Widening the slits ($a \uparrow$) decreases spatial uncertainty ($\Delta x \downarrow$) as the particle passes through the slit plane. Consequently, the momentum uncertainty in the transverse direction must decrease ($\Delta p_x \downarrow$). Because transverse momentum is constrained, particles scatter at smaller angles, causing the diffraction envelope $\text{sinc}^2(\alpha)$ to narrow.
 
@@ -103,3 +116,4 @@ physics-simulations/
 * **3D Graphics Engine:** Three.js (WebGL, OrbitControls)
 * **Math Rendering:** MathJax (LaTeX TeX/TeX-MML-chtml)
 * **Data Processing & Scripts:** Python 3.9+ (`numpy`, `matplotlib`, `requests`)
+
